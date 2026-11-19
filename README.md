@@ -162,6 +162,7 @@ python ml_pipeline/data_collection/02_extract_sentinel2.py
 python ml_pipeline/data_collection/03_extract_sentinel1.py
 python ml_pipeline/data_collection/04_extract_era5.py
 python ml_pipeline/data_collection/08_extract_and_merge_historical.py
+python ml_pipeline/processing/09_extract_soil_properties.py
 ```
 
 Set `TEST_MODE=True` in `.env` to restrict extraction to 100 grid cells and
@@ -184,7 +185,8 @@ Primary outputs from the full 2018–2024 run:
 - `data/processed/nepal_all_77_districts_dataset.csv` — 539 district-year rows
   (77 districts × 7 years) with climate, area, production, and crop yields.
 - `data/final/nepal_crop_ml_training_dataset.csv` — 127,677 grid-year-crop rows
-  covering 9 crops, with annual and quarterly features (152 columns).
+  covering 9 crops, with annual and quarterly features plus five OpenLandMap
+  soil properties (157 columns).
 
 Missing values reflect real source gaps; they are never filled with constants.
 Sentinel-2 has almost no usable scenes over Nepal in July 2018 and none in
@@ -198,6 +200,11 @@ are means, rainfall and solar radiation are sums, and rainfall is converted from
 metres to millimetres. Historical yields combine the Open Data Nepal CKAN
 2024/25 district tables with the cached Zenodo 2018–2023 maize/wheat panel.
 Missing labels are left as nulls; they are never imputed with constants.
+
+Soil properties are sampled per grid centroid from OpenLandMap through Earth
+Engine and cached in `data/processed/soil_properties_grid.csv`. Nitrogen is a
+documented proxy derived from organic carbon (8% by mass), not an independent
+measurement.
 
 ### 6. Backend
 
